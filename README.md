@@ -1,8 +1,9 @@
 # sql-data-cleaningg
+<img width="512" height="338" alt="image" src="https://github.com/user-attachments/assets/1be4cce2-50cb-422d-9958-4bba5a67c989" />
 
 This is an educational project on data cleaning and preparation using SQL. The original database in CSV format is located in the file club_member_info.csv. Here, we will explore the steps that need to be applied to obtain a cleansed version of the dataset.
 
-## View data
+## 1. View data
 View 10 first rows
 ```
 SELECT *
@@ -23,8 +24,8 @@ Result
 |mendie alexandrescu|46|single|malexandrescu8@state.gov|504-918-4753|34 Delladonna Terrace,New Orleans,Louisiana|Systems Administrator III|3/12/1921|
 
 | fey kloss|52|married|fkloss9@godaddy.com|808-177-0318|8976 Jackson Park,Honolulu,Hawaii|Chemical Engineer|11/5/2014|
-## Copy new table
-### Create new table for cleaning 
+## 2. Copy new table
+### 2.1 Create new table for cleaning 
 ``` sql
 CREATE TABLE club_member_info_cleaned (
 	full_name VARCHAR(50),
@@ -37,11 +38,31 @@ CREATE TABLE club_member_info_cleaned (
 	membership_date NVARCHAR(50)
 );
 ```
-### Copy all values from original table
+### 2.2 Copy all values from original table
 ```sql
 INSERT INTO club_member_info_cleaned 
 SELECT* FROM club_member_info;
 ```
+## 3. Cleaning data
+### 3.1 Full_name:
+#### 3.1.1 Trim whitespace 
+``` sql
+UPDATE club_member_info_cleaned 
+SET full_name = TRIM(full_name );
+```
+Result
+|full_name|
+|---------|
+|addie lush|
+|ROCK CRADICK|
+|Sydel Sharvell|
+|Constantin de la cruz|
+|Gaylor Redhole|
+|Wanda del mar|
+|Joann Kenealy|
+|Joete Cudiff|
+|mendie alexandrescu|
+|fey kloss|
 
 
 
