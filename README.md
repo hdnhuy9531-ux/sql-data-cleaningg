@@ -94,3 +94,72 @@ UPDATE club_member_info_cleaned
 SET age = 42
 WHERE age = '';
 ```
+### 3.3 Other columns
+Similar to the full_name and age columns, the remaining columns also have a lot of data that needs to be cleaned.
+```sql
+UPDATE club_member_info_cleaned
+SET 
+    martial_status = TRIM(martial_status),
+    email = TRIM(email),
+    phone = TRIM(phone),
+    full_address = TRIM(full_address),
+    job_title = TRIM(job_title),
+    membership_date = TRIM(membership_date);
+```
+To delete all the missing data:
+```sql
+DELETE FROM club_member_info_cleaned
+WHERE martial_status = ""
+OR email = ""
+OR phone = ""
+OR full_address = ""
+OR job_title = ""
+OR membership_date = "";
+```
+To replace all the missing data with 'null' 
+``` sql
+UPDATE club_member_info_cleaned
+SET 
+    martial_status = null WHERE martial_status = '';
+UPDATE club_member_info_cleaned
+SET 
+    email = null WHERE email = '';
+UPDATE club_member_info_cleaned
+SET 
+    phone = null WHERE phone = '';
+UPDATE club_member_info_cleaned
+SET 
+    full_address = null WHERE full_address = '';
+UPDATE club_member_info_cleaned
+SET 
+    job_title = null WHERE job_title = '';
+UPDATE club_member_info_cleaned
+SET 
+    membership_date = null WHERE membership_date = '';
+```
+### 3.4 Membership_date
+At membership_date column, I updated the new data to match the format of "MM/DD/YYYY" by:
+``` sql
+UPDATE club_member_info_cleaned
+SET membership_date = 
+    CASE
+        WHEN membership_date LIKE "_/__/____" THEN "0" || SUBSTR(membership_date, 1, 1) || SUBSTR(membership_date, 2)
+        WHEN membership_date LIKE "__/_/____" THEN SUBSTR(membership_date, 1, 3) || "0" || SUBSTR(membership_date, 4)
+        WHEN membership_date LIKE "_/_/____" THEN "0" || SUBSTR(membership_date, 1, 2) || "0" || SUBSTR(membership_date, 3)
+        WHEN membership_date LIKE "__/__/____" THEN membership_date
+        ELSE NULL
+    END;
+```
+Result
+|membership_date|formatted_date|
+|---------------|--------------|
+|07/31/2013|07/31/2013|
+|05/27/2018|05/27/2018|
+|10/06/2017|10/06/2017|
+|05/29/2019|05/29/2019|
+|03/24/2015|03/24/2015|
+|04/17/2013|04/17/2013|
+|11/16/2014|11/16/2014|
+|03/12/1921|03/12/1921|
+|11/05/2014|11/05/2014|
+|03/12/2017|03/12/2017|
