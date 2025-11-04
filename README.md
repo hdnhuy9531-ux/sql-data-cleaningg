@@ -81,6 +81,16 @@ Result
 |JOETE CUDIFF|
 |MENDIE ALEXANDRESCU|
 |FEY KLOSS|
-
-
-
+### 3.2 Age:
+#### 3.2.1 Replace age greater than 100
+```sql
+UPDATE club_member_info_cleaned 
+SET age = CAST(SUBSTR(age, 1, 2) AS INTEGER)
+WHERE age > 100 AND age <> '';
+```
+#### 3.2.2 Update whitespace with AVG value
+```sql
+UPDATE club_member_info_cleaned 
+SET age = 42
+WHERE age = '';
+```
